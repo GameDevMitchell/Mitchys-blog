@@ -183,7 +183,7 @@ def get_all_posts():
 def show_post(post_id):
     form = CommentForm()
     requested_post = db.get_or_404(BlogPost, post_id)
-    comments = db.session.execute(db.select(Comments)).scalars()
+    # comments = db.session.execute(db.select(Comments)).scalars()
     if form.validate_on_submit():
         if current_user.is_authenticated:
             comment = Comments(
@@ -193,11 +193,11 @@ def show_post(post_id):
             )
             db.session.add(comment)
             db.session.commit()
-            return render_template("post.html", post=requested_post, form=form, comments=comments)
+            return render_template("post.html", post=requested_post, form=form)
         else:
             flash('You need to login or register to post a comment')
             return redirect(url_for("login"))
-    return render_template("post.html", post=requested_post, form=form, comments=comments)
+    return render_template("post.html", post=requested_post, form=form)
 
 
 # TODO: Use a decorator so only an admin user can create a new post
